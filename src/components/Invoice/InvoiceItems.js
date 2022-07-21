@@ -1,25 +1,44 @@
-import React from "react";
+import React,{useState} from "react";
 import LineItem from "./LineItem";
 
-const InvoiceItems = () => {
+const InvoiceItems = (props) => {
+
+	// const [lineItems, setLineItems] = useState([]);
+
+	// const addLineItem = (event) => {
+	// 	const toPush = lineItems;
+	// 	toPush.push(
+	// 		<LineItem products={props.products} randomNumGenerator={props.randomNumGenerator} />
+	// 	);
+	// 	console.log(toPush);
+	// 	setLineItems(toPush);
+	// };
+
 	return (
-		<div className="items ba w-80 center">
-			<div>
-				<div className="ba fl w-70 bg-blue">
+		<div className="items-container w-100 mt5">
+			<div id="items" className="items center w-80">
+				<div className="ba w-20 dib bg-blue">
+					<span>Item</span>
+				</div>
+				<div className="ba w-50 dib bg-blue">
 					<span>Description</span>
 				</div>
-				<div className="ba fl w-10 bg-blue">
-					<span>Tax</span>
-				</div>
-				<div className="ba fl w-10 bg-blue">
+				<div className="ba w-10 dib bg-blue">
 					<span>Quantity</span>
 				</div>
-				<div className="ba fl w-10 bg-blue">
+				<div className="ba w-10 dib bg-blue">
+					<span>Tax</span>
+				</div>
+
+				<div className="ba w-10 dib bg-blue">
 					<span>Line Total</span>
 				</div>
-			</div>
 
-			<LineItem/>
+				{/* [...lineItems] */}
+				
+				<LineItem products={props.products} randomNumGenerator={props.randomNumGenerator}/>
+				<LineItem products={props.products} randomNumGenerator={props.randomNumGenerator}/>
+			</div>
 		</div>
 	);
 };

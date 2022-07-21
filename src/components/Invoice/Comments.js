@@ -1,27 +1,22 @@
 import React from "react";
-import LineItem from "./LineItem";
 
-const InvoiceItems = () => {
+const Comments = () => {
 	return (
-		<div className="items ba w-80 center">
-			<div>
-				<div className="ba fl w-70 bg-blue">
-					<span>Description</span>
-				</div>
-				<div className="ba fl w-10 bg-blue">
-					<span>Tax</span>
-				</div>
-				<div className="ba fl w-10 bg-blue">
-					<span>Quantity</span>
-				</div>
-				<div className="ba fl w-10 bg-blue">
-					<span>Line Total</span>
-				</div>
+		<div className="comments dib ml6 w-60">
+			<div className="ba br--top br3 bg-blue">
+				<span>OTHER COMMENTS:</span>
 			</div>
-
-			<LineItem/>
+			<div className="ba br--bottom br3 ">
+				<ol>
+					<li>Total amount is due within 30 days.</li>
+					<li>
+						Please include your invoice number as a reference on any EFT
+						payments or cheques
+					</li>
+				</ol>
+			</div>
 		</div>
 	);
 };
 
-export default InvoiceItems;
+export default Comments;

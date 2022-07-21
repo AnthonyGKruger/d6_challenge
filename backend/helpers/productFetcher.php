@@ -2,9 +2,9 @@
 
     // header('Access-Control-Allow-Origin: http://localhost:3000'); // for dev purposes
     
-    $json = file_get_contents("php://input"); // json string
-    // echo $json;
-    $object = json_decode($json);
+    // // $json = file_get_contents("php://input"); // json string
+    // // echo $json;
+    // $object = json_decode($json);
   
     
     $servername = "localhost";
@@ -21,7 +21,7 @@
     }
     // echo "Connected successfully";
 
-    $result = $conn->query("SELECT * FROM `clients` WHERE `company_name` =" . "'" . $object->name . "'" . ";");
+    $result = $conn->query("SELECT * FROM `products`;");
      
     $resultObj = [];
     
