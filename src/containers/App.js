@@ -1,8 +1,8 @@
 import "./App.css";
-import "tachyons";
+
 import Invoice from "../components/Invoice/Invoice";
 import React, { useEffect, useState } from "react";
-import Landing from "../components/Landing";
+import Landing from "../components/landing/Landing";
 
 function App() {
 	const [clients, setClients] = useState([]);
