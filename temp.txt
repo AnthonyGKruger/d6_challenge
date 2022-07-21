@@ -5,3 +5,47 @@ const = () => {
 };
 
 export default ;
+
+
+
+
+
+
+ const date = new Date();
+	return (
+		<div className="invoice-details fr w-30">
+			<h1>Invoice</h1>
+
+			<div className="fl w-30">
+				<span className="h-10">
+					Date: 
+					<br />
+				</span>
+				<span>
+					Invoice #
+					<br />
+				</span>
+				<span>
+					Customer ID
+					<br />
+				</span>
+				<span>
+					Due Date
+					<br />
+				</span>
+			</div>
+
+			<div className="fr mr5 w-50">
+				<div className="ba br1 br--top">
+					{`${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`}
+				</div>
+
+				<div className="ba">00000001</div>
+				<div className="ba">00000001</div>
+				<div className="ba br2 br--bottom bg-washed-blue">
+					<input className="bg-washed-blue" type="date" />
+					{/*remember to link to form*/}
+				</div>
+			</div>
+		</div>
+	);
