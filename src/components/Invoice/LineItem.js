@@ -1,25 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import "./LineItem.css";
 
 const LineItem = (props) => {
-	const products = props.products;
 	const randomID = props.randomNumGenerator(1, 1000);
 
-	const description = document.getElementById(`description${randomID}`);
-	const productQuantity = document.getElementById(
-		`product-quantity${randomID}`
-	);
-	const taxAmount = document.getElementById(`tax-amount${randomID}`);
-	const totalField = document.getElementById(`line-total${randomID}`);
-
 	const productList = props.products.map((product, i) => {
-		// if (!alreadyListedProducts.includes(props.products[i].product_name)) {
 		return (
 			<option key={props.products[i].product_id}>
 				{props.products[i].product_name}
 			</option>
 		);
-		// }
 	});
 
 	const roundToTwo = (num) => {
@@ -27,22 +17,32 @@ const LineItem = (props) => {
 	};
 
 	const getItemInformation = () => {
-		const selectValue = document.getElementById(`product-drop-down${randomID}`)
-			.options[
-			document.getElementById(`product-drop-down${randomID}`).selectedIndex
-		].value;
+		const select = document.getElementById(`product-drop-down${randomID}`);
 
-		if (selectValue) {
+		if (select.options[select.selectedIndex].value === "Please Select...") {
 			console.log("select is on please select");
-			description.innerHTML = "";
-			productQuantity.innerHTML = "";
-			taxAmount.innerHTML = "";
-			totalField.innerHTML = "";
+			document.getElementById(`description${randomID}`).innerHTML = "";
+			document.getElementById(`product-quantity${randomID}`).innerHTML = "";
+			document.getElementById(`tax-amount${randomID}`).innerHTML = "";
+			document.getElementById(`line-total${randomID}`).innerHTML = "";
+			document.getElementById(`product-name${randomID}`).innerHTML = "";
 			return;
 		}
 
+		// console.log(
+		// 	props.products.filter((product, i) => {
+		// 		return (
+		// 			props.products[i].product_name ===
+		// 			select.options[select.selectedIndex].value
+		// 		);
+		// 	})
+		// );
+
 		return props.products.filter((product, i) => {
-			return products[i].product_name === selectValue;
+			return (
+				props.products[i].product_name ===
+				select.options[select.selectedIndex].value
+			);
 		});
 	};
 
@@ -51,14 +51,20 @@ const LineItem = (props) => {
 			.options[
 			document.getElementById(`product-drop-down${randomID}`).selectedIndex
 		].value;
-		const itemInformation = getItemInformation(selectValue);
-		document.getElementById(`description${randomID}`).innerHTML =
-			itemInformation[0].product_description;
-		document.getElementById(`product-quantity${randomID}`).value = 1;
-		document.getElementById(`product-name${randomID}`).innerHTML =
-			itemInformation[0].product_name;
 
-		updateLineItemPricing();
+		const itemInformation = getItemInformation(selectValue);
+
+		if (!(itemInformation === undefined)) {
+			document.getElementById(`description${randomID}`).innerHTML =
+				itemInformation[0].product_description;
+
+			document.getElementById(`product-quantity${randomID}`).value = 1;
+
+			document.getElementById(`product-name${randomID}`).innerHTML =
+				itemInformation[0].product_name;
+
+			updateLineItemPricing();
+		}
 	};
 
 	const updateTotals = (event, lineTotal, vat) => {
@@ -66,6 +72,16 @@ const LineItem = (props) => {
 		props.setTotalVat(roundToTwo(props.totalVat + vat));
 		props.setSubTotal(roundToTwo(props.subTotal + lineTotal));
 		props.setTotal(roundToTwo(props.total + lineTotal + vat));
+
+		// const lineItemInfo = getItemInformation()[0];
+
+		// console.log(lineItemInfo);
+
+		// props.setInvoicePayload({
+		// 	productID: lineItemInfo.product_id,
+		// 	lineTotal: parseFloat(document.getElementById(`line-total${randomID}`)),
+		// 	dueDate: document.getElementById('invoice-due-date').value
+		// });
 	};
 
 	const updateLineItemPricing = (event) => {
@@ -88,6 +104,26 @@ const LineItem = (props) => {
 				"R" + roundToTwo(vat);
 			document.getElementById(`line-total${randomID}`).innerHTML =
 				"R" + roundToTwo(lineTotal);
+
+			const lineItemInfo = getItemInformation()[0];
+			const prevPayload = [props.payload];
+			prevPayload.push({
+				productID: lineItemInfo.product_id,
+				lineTotal: lineTotal,
+				dueDate: document.getElementById("invoice-due-date").value,
+			})
+			props.setInvoicePayload(
+				prevPayload
+				// [
+			// 	...props.invoicePayLoad,
+			// 	{
+			// 		productID: lineItemInfo.product_id,
+			// 		lineTotal: lineTotal,
+			// 		dueDate: document.getElementById("invoice-due-date").value,
+			// 	},
+			// ]
+			);
+
 			updateTotals(event, priceExcludingVat, lineTotal, vat);
 		}
 	};
@@ -119,10 +155,10 @@ const LineItem = (props) => {
 					id={`description${randomID}`}
 					className="inventory-cell w-40 pv3 pr3 ba b--black-20"
 				></td>
-				<td className="inventory-cell w-10 pv3 pr3 ba b--black-20">
+				<td className="w-10 pv3 pr3 ba b--black-20">
 					<input
 						onChange={updateLineItemPricing}
-						className=""
+						className="inventory-cell"
 						min="1"
 						type="number"
 						id={`product-quantity${randomID}`}

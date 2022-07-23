@@ -14,8 +14,11 @@ const Invoice = (props) => {
 			setTotal={props.setTotal}
 			setTotalVat={props.setTotalVat}
 			setSubTotal={props.setSubTotal}
+			invoicePayload={props.invoicePayload}
+			setInvoicePayload={props.setInvoicePayload}
 		/>,
 	]);
+
 	const date = new Date();
 
 	const addLineItem = (event) => {
@@ -30,6 +33,8 @@ const Invoice = (props) => {
 				setTotal={props.setTotal}
 				setTotalVat={props.setTotalVat}
 				setSubTotal={props.setSubTotal}
+				invoicePayload={props.invoicePayload}
+				setInvoicePayload={props.setInvoicePayload}
 			/>
 		);
 		setLineItems(toPush);
@@ -73,21 +78,31 @@ const Invoice = (props) => {
 						</div>
 
 						<div className="pa1 ba">
-							<span>Invoice #00000001</span>
+							<span>Invoice #{props.invoiceId}</span>
 						</div>
 						<div className="pa1 ba">
 							<span>Customer ID #{props.clientInfo.client_id}</span>
 						</div>
 						<div className="pa1 ba br--bottom br3 bg-washed-blue">
 							<span>
-								Due Date: <input className="bg-washed-blue" type="date" />
+								Due Date:{" "}
+								<input
+									className="bg-washed-blue"
+									type="date"
+									id="invoice-due-date"
+									defaultValue={`${date.getFullYear()}-${
+										date.getMonth() + 1
+									}-${date.getDate()}`}
+									min={`${date.getFullYear()}-${
+										date.getMonth() + 1
+									}-${date.getDate()}`}
+								/>
 								{/*remember to link to form*/}
 							</span>
 						</div>
 					</div>
 				</div>
 			</div>
-
 			<div className="client-details-container center w-100 mt4">
 				<div className="client-details ml6 w-30">
 					<div className="pa1 ba bg-blue br--top br3">
@@ -110,7 +125,6 @@ const Invoice = (props) => {
 					</div>
 				</div>
 			</div>
-
 			<div className="items-container w-100 h7 mt3">
 				<div id="items" className="items center w-80">
 					<div className="pa2">
@@ -144,7 +158,6 @@ const Invoice = (props) => {
 					</div>
 				</div>
 			</div>
-
 			<div className="button-container mb4 mt4 w-100">
 				<div className="dib ml6 buttons">
 					<Button
@@ -153,17 +166,17 @@ const Invoice = (props) => {
 						text="Add Item"
 						styles=" w-15 pa3 mr3 ba bw1 br2 b--black grow"
 						// randomNumGenerator={props.randomNumGenerator}
-						addLineItem={addLineItem}
+						onClick={addLineItem}
 					/>
 					<Button
 						name="generateBtn"
 						type="submit"
 						text="Generate Invoice"
 						styles="w-15 pa3  ba bw1 br2 b--black grow"
+						onClick={props.generateInvoice}
 					/>
 				</div>
 			</div>
-
 			<div className="comments dib ml6 w-60">
 				<div className="ba pv2 br--top br3 bg-blue">
 					<span>OTHER COMMENTS:</span>
@@ -178,7 +191,6 @@ const Invoice = (props) => {
 					</ol>
 				</div>
 			</div>
-
 			<div className="ml4 w-20 pr5 dib totals">
 				<div className="dt dt--fixed">
 					<div className="dt-row br3">
@@ -195,7 +207,6 @@ const Invoice = (props) => {
 					</div>
 				</div>
 			</div>
-
 			<div className="w-100 mt5">
 				<div className="center w-80">
 					<span>
@@ -227,7 +238,8 @@ const Invoice = (props) => {
 						</a>
 					</span>
 				</div>
-			</div>
+			</div>{" "}
+			{}
 		</div>
 	);
 };

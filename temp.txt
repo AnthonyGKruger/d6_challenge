@@ -209,3 +209,30 @@ const Invoice = (props) => {
 };
 
 export default Invoice;
+
+
+
+[
+<td class="inventory-cell product-option955 w-20 pv3 pr3 ba b--black-20">…</td>
+,
+<td id="product-name955" class="inventory-cell w-10 pv3 pr3 ba b--black-20">Red Grapes</td>,
+<td id="description955" class="inventory-cell w-40 pv3 pr3 ba b--black-20">Cluster Of Unseeded Red Grapes. </td>
+,
+<input class="inventory-cell" min="1" type="number" id="product-quantity955" value="0">
+,
+<td id="tax-amount955" class="inventory-cell w-10 pv3 pr3 ba b--black-20">R1.98</td>
+,
+<td id="line-total955" class="inventory-cell w-10 pv3 pr3 ba b--black-20">R13.19</td>
+,
+<td class="inventory-cell product-option367 w-20 pv3 pr3 ba b--black-20">…</td>
+,
+<td id="product-name367" class="inventory-cell w-10 pv3 pr3 ba b--black-20">Honey Crisp Apple</td>
+,
+<td id="description367" class="inventory-cell w-40 pv3 pr3 ba b--black-20">Delicious Red Apples With A Sweet Taste.</td>
+,
+<input class="inventory-cell" min="1" type="number" id="product-quantity367" value="0" data-com.bitwarden.browser.user-edited="yes">
+,
+<td id="tax-amount367" class="inventory-cell w-10 pv3 pr3 ba b--black-20">R2.07</td>
+,
+<td id="line-total367" class="inventory-cell w-10 pv3 pr3 ba b--black-20">R13.8</td>
+]
