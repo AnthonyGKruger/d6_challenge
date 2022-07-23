@@ -3,7 +3,6 @@ import "./App.css";
 import Invoice from "../components/Invoice/Invoice";
 import React, { useEffect, useState } from "react";
 import Landing from "../components/landing/Landing";
-// import LineItem from "../components/Invoice/LineItem";
 
 function App(props) {
 	const [clientList, setClientList] = useState([]);
@@ -11,7 +10,10 @@ function App(props) {
 	const [showInvoice, setShowInvoice] = useState(false);
 	const [clientInfo, setClientInfo] = useState("");
 	const [products, setProducts] = useState("");
-	// const [lineItems, setLineItems] = useState([]);
+	
+	const [total, setTotal] = useState(0);
+	const [totalVat, setTotalVat] = useState(0);
+	const [subTotal, setSubTotal] = useState(0);
 
 	const getClientList = async () => {
 		const response = await fetch(
@@ -68,6 +70,7 @@ function App(props) {
 		// const products = json[0];
 		//		console.log(products);
 		setProducts(products);
+		// addLineItem()
 	};
 
 	useEffect(() => {
@@ -81,25 +84,23 @@ function App(props) {
 		setShowInvoice(true);
 	};
 
-	// const addLineItem = (event) => {
-	// 	const toPush = lineItems;
-	// 	toPush.push(
-	// 		<LineItem products={products} randomNumGenerator={getRandomInt} />
-	// 	);
-	// 	console.log(toPush);
-	// 	setLineItems(toPush);
-	// };
-
 	return (
 		<React.Fragment>
 			{showInvoice ? (
-				<Invoice clientInfo={clientInfo}
+				<Invoice
+					clientInfo={clientInfo}
 					products={products}
-					randomNumGenerator={getRandomInt}/>
-					// lineItem={lineItems}
-					// setLineItems={setLineItems}
-					// addLineItem={addLineItem}>	
-			
+					randomNumGenerator={getRandomInt}
+					total={total}
+					totalVat={totalVat}
+					subTotal={subTotal}
+					setTotal={setTotal}
+					setTotalVat={setTotalVat}
+					setSubTotal={setSubTotal}
+					
+					// addLineItem={addLineItem}
+					// lineItems={lineItems}
+				/>
 			) : clientList.length > 0 ? (
 				<Landing clients={clientList} formHandler={submitHandler} />
 			) : (

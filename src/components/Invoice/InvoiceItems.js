@@ -34,10 +34,7 @@ const InvoiceItems = (props) => {
 					<span>Line Total</span>
 				</div>
 
-				{/* [...lineItems] */}
-				
-				<LineItem products={props.products} randomNumGenerator={props.randomNumGenerator}/>
-				<LineItem products={props.products} randomNumGenerator={props.randomNumGenerator}/>
+				{/* line item here */}
 			</div>
 		</div>
 	);
