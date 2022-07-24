@@ -4,6 +4,15 @@ import Button from "./Button";
 import LineItem from "./LineItem";
 
 const Invoice = (props) => {
+
+	const removeLineItem = (event) => {
+		const toRemove = [...lineItems]
+		toRemove.pop()	
+		console.log(toRemove)
+
+		setLineItems(toRemove)
+	};
+
 	const [lineItems, setLineItems] = useState([
 		<LineItem
 			products={props.products}
@@ -97,7 +106,6 @@ const Invoice = (props) => {
 										date.getMonth() + 1
 									}-${date.getDate()}`}
 								/>
-								{/*remember to link to form*/}
 							</span>
 						</div>
 					</div>
@@ -132,24 +140,25 @@ const Invoice = (props) => {
 							<table className="f6 w-100  center" cellSpacing="0">
 								<thead>
 									<tr>
-										<th className="w-10 fw6 ba b--black-20 tl pb2 pr3 bg-blue">
+										<th className="fw6 ba b--black-20 tl pb2 pr3 bg-blue">
 											Item
 										</th>
-										<th className="w-20 fw6 ba b--black-20 tl pb2 pr3 bg-blue">
-											name
+										<th className="fw6 ba b--black-20 tl pb2 pr3 bg-blue">
+											Name
 										</th>
-										<th className="w-40 fw6 ba b--black-20 tl pb2 pr3 bg-blue">
+										<th className="fw6 ba b--black-20 tl pb2 pr3 bg-blue">
 											Description
 										</th>
-										<th className="w-10 fw6 ba b--black-20 tl pb2 pr3 bg-blue">
+										<th className="fw6 ba b--black-20 tl pb2 pr3 bg-blue">
 											Quantity
 										</th>
-										<th className="w-10 fw6 ba b--black-20 tl pb2 pr3 bg-blue">
+										<th className="fw6 ba b--black-20 tl pb2 pr3 bg-blue">
 											Tax
 										</th>
-										<th className="w-10 fw6 ba b--black-20 tl pb2 pr3 bg-blue">
+										<th className="fw6 ba b--black-20 tl pb2 pr3 bg-blue">
 											Line Total
 										</th>
+							
 									</tr>
 								</thead>
 								<tbody className="lh-copy">{[...lineItems]}</tbody>
@@ -165,7 +174,6 @@ const Invoice = (props) => {
 						type="submit"
 						text="Add Item"
 						styles=" w-15 pa3 mr3 ba bw1 br2 b--black grow"
-						// randomNumGenerator={props.randomNumGenerator}
 						onClick={addLineItem}
 					/>
 					<Button
@@ -174,6 +182,13 @@ const Invoice = (props) => {
 						text="Generate Invoice"
 						styles="w-15 pa3  ba bw1 br2 b--black grow"
 						onClick={props.generateInvoice}
+					/>
+					<Button
+						name="deleteBtn"
+						type="submit"
+						text="Delete Last Item"
+						styles="w-15 pa3 ml3 ba bw1 br2 b--black grow"
+						onClick={removeLineItem}
 					/>
 				</div>
 			</div>

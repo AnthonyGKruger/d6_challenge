@@ -2,6 +2,11 @@
 
     // header('Access-Control-Allow-Origin: http://localhost:3000'); // for dev purposes
     
+    // // $json = file_get_contents("php://input"); // json string
+    // // echo $json;
+    // $object = json_decode($json);
+  
+    
     $servername = "localhost";
     $username = "root";
     $password = "293593";
@@ -16,15 +21,15 @@
     }
     // echo "Connected successfully";
 
-    $result = $conn->query("SELECT `company_name` FROM `clients`");
-    
+    $result = $conn->query("SELECT * FROM `products`;");
+     
     $resultObj = [];
     
     if ($result->num_rows > 0) {
         // output data of each row
         while($row = $result->fetch_assoc()) {
-          array_push($resultObj, $row['company_name']);
-          // print_r($row['company_name']);
+          array_push($resultObj, $row);
+        //   print_r($row);
         }
         echo json_encode($resultObj );
       } else {
