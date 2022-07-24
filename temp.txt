@@ -1,0 +1,238 @@
+import React, { useState } from "react";
+import "./Invoice.css";
+import Button from "./Button";
+import LineItem from "./LineItem";
+
+const Invoice = (props) => {
+	const [lineItems, setLineItems] = useState([
+		<LineItem
+			products={props.products}
+			randomNumGenerator={props.randomNumGenerator}
+		/>,
+	]);
+	const date = new Date();
+
+	const addLineItem = (event) => {
+		const toPush = [...lineItems];
+		toPush.push(
+			<LineItem
+				products={props.products}
+				randomNumGenerator={props.randomNumGenerator}
+			/>
+		);
+		setLineItems(toPush);
+	};
+
+	return (
+		<div className="container mt5 mb5 center ba br1 w-70 bg-white">
+			<div className="company-header w-100">
+				<div className="company-details pl6 dib w-50">
+					<h1>
+						The Fruit and Veg
+						<br /> Distributor (Pty) ltd
+					</h1>
+					<div className="ba mr7 br--top br3">
+						<span>123 DownTheRoad street</span>
+					</div>
+					<div className="ba mr7">
+						<span>Pretoria, Gauteng, 0157</span>
+					</div>
+					<div className="ba mr7">
+						<span>Telephone: 061 034 0820</span>
+					</div>
+					<div className="ba mr7">
+						<span>Fax: 061 034 0821</span>
+					</div>
+					<div className="ba mr7 br--bottom br3">
+						<span>www.website.com</span>
+					</div>
+				</div>
+
+				<div className="invoice-details-container dib pl7 w-40">
+					<div className="invoice-details">
+						<h1>Invoice</h1>
+						<div className="ba br--top br3">
+							<span>
+								Date:{" "}
+								{`${date.getFullYear()}/${
+									date.getMonth() + 1
+								}/${date.getDate()}`}
+							</span>
+						</div>
+
+						<div className="ba">
+							<span>Invoice #00000001</span>
+						</div>
+						<div className="ba">
+							<span>Customer ID #{props.clientInfo.client_id}</span>
+						</div>
+						<div className="ba br--bottom br3 bg-washed-blue">
+							<span>
+								Due Date: <input className="bg-washed-blue" type="date" />
+								{/*remember to link to form*/}
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div className="client-details-container center w-100 mt4">
+				<div className="client-details ml6 w-30">
+					<div className="ba bg-blue br--top br3">
+						<span>BILL TO</span>
+					</div>
+					<div className="ba">
+						<span>{props.clientInfo.representative}</span>
+					</div>
+					<div className="ba">
+						<span>{props.clientInfo.company_name}</span>
+					</div>
+					<div className="ba">
+						<span>{props.clientInfo.street_address}</span>
+					</div>
+					<div className="ba">
+						<span>{`${props.clientInfo.city}, ${props.clientInfo.state}, ${props.clientInfo.postal_code}`}</span>
+					</div>
+					<div className="ba br--bottom br3">
+						<span>{props.clientInfo.phone_number}</span>
+					</div>
+				</div>
+			</div>
+
+			<div className="items-container w-100 mt5">
+				<div id="items" className="items center w-80">
+					<div className="ba w-20 dib bg-blue">
+						<span>Item</span>
+					</div>
+					<div className="ba w-50 dib bg-blue">
+						<span>Description</span>
+					</div>
+					<div className="ba w-10 dib bg-blue">
+						<span>Quantity</span>
+					</div>
+					<div className="ba w-10 dib bg-blue">
+						<span>Tax</span>
+					</div>
+
+					<div className="ba w-10 dib bg-blue">
+						<span>Line Total</span>
+					</div>
+
+					{[...lineItems]}
+					{/* <LineItem
+						products={props.products}
+						randomNumGenerator={props.randomNumGenerator}
+					/> */}
+				</div>
+			</div>
+
+			<div className="button-container mb4 mt4 w-100">
+				<div className="dib ml6 buttons">
+					<Button
+						name="addBtn"
+						type="submit"
+						text="Add Item"
+						styles=" w-15 pa3 mr3 ba bw1 br2 b--black grow"
+						// randomNumGenerator={props.randomNumGenerator}
+						addLineItem={addLineItem}
+					/>
+					<Button
+						name="generateBtn"
+						type="submit"
+						text="Generate Invoice"
+						styles="w-15 pa3  ba bw1 br2 b--black grow"
+					/>
+				</div>
+			</div>
+
+			<div className="comments dib ml6 w-60">
+				<div className="ba br--top br3 bg-blue">
+					<span>OTHER COMMENTS:</span>
+				</div>
+				<div className="ba br--bottom br3 ">
+					<ol>
+						<li>Total amount is due within 30 days.</li>
+						<li>
+							Please include your invoice number as a reference on any EFT
+							payments or cheques
+						</li>
+					</ol>
+				</div>
+			</div>
+
+			<div className="ml4 w-20 pr5 dib totals">
+				<div className="ba br--top br3 subtotal">
+					<span>Subtotal: 0000</span>
+				</div>
+				<div className="ba vat">
+					<span>VAT: 0000</span>
+				</div>
+				<div className="ba br--bottom br3 total">
+					<span>Total: 0000</span>
+				</div>
+			</div>
+
+			<div className="w-100 mt5">
+				<div className="center w-80">
+					<span>
+						If you have any questions regarding this invoice please contact,
+						Anthony on 0610340820 or antman.kruger@gmail.com
+					</span>
+				</div>
+				<div className="center w-30 mt5">
+					<span>THANK YOU FOR YOUR BUSINESS!</span>
+				</div>
+				<div className="center w-90 mt6">
+					<span>
+						Developed by Anthony Kruger, check out the{" "}
+						<a
+							href="https://github.com/AnthonyGKruger/d6_challenge"
+							target="_blank"
+							rel="noreferrer"
+						>
+							source code
+						</a>{" "}
+						or my{" "}
+						<a
+							href="https://www.linkedin.com/in/anthony-gordon-kruger-18950793"
+							target="_blank"
+							rel="noreferrer"
+						>
+							{" "}
+							linkedIn page
+						</a>
+					</span>
+				</div>
+			</div>
+		</div>
+	);
+};
+
+export default Invoice;
+
+
+
+[
+<td class="inventory-cell product-option955 w-20 pv3 pr3 ba b--black-20">…</td>
+,
+<td id="product-name955" class="inventory-cell w-10 pv3 pr3 ba b--black-20">Red Grapes</td>,
+<td id="description955" class="inventory-cell w-40 pv3 pr3 ba b--black-20">Cluster Of Unseeded Red Grapes. </td>
+,
+<input class="inventory-cell" min="1" type="number" id="product-quantity955" value="0">
+,
+<td id="tax-amount955" class="inventory-cell w-10 pv3 pr3 ba b--black-20">R1.98</td>
+,
+<td id="line-total955" class="inventory-cell w-10 pv3 pr3 ba b--black-20">R13.19</td>
+,
+<td class="inventory-cell product-option367 w-20 pv3 pr3 ba b--black-20">…</td>
+,
+<td id="product-name367" class="inventory-cell w-10 pv3 pr3 ba b--black-20">Honey Crisp Apple</td>
+,
+<td id="description367" class="inventory-cell w-40 pv3 pr3 ba b--black-20">Delicious Red Apples With A Sweet Taste.</td>
+,
+<input class="inventory-cell" min="1" type="number" id="product-quantity367" value="0" data-com.bitwarden.browser.user-edited="yes">
+,
+<td id="tax-amount367" class="inventory-cell w-10 pv3 pr3 ba b--black-20">R2.07</td>
+,
+<td id="line-total367" class="inventory-cell w-10 pv3 pr3 ba b--black-20">R13.8</td>
+]

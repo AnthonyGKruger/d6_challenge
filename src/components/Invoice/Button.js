@@ -1,0 +1,16 @@
+import React from "react";
+
+const Button = (props) => {
+	return (
+		<button
+			name={props.name}
+			type={props.type}
+			onClick={props.onClick}
+			className={props.styles}
+		>
+			{props.text}
+		</button>
+	);
+};
+
+export default Button;
