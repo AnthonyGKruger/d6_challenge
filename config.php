@@ -1,8 +1,13 @@
 <?php
+    // $servername = "localhost";
+    // $username = "u313581005_d6";
+    // $password = "D6_challenge";
+    // $db = "u313581005_d6_challenge";
+
     $servername = "localhost";
-    $username = "u313581005_d6";
-    $password = "D6_challenge";
-    $db = "u313581005_d6_challenge";
+    $username = "root";
+    $password = "293593";
+    $db = "d6_challenge";
     
     // Create connection
     $conn = new mysqli($servername, $username, $password, $db);

@@ -6,7 +6,7 @@ const LineItem = (props) => {
 
 	const productList = props.products.map((product, i) => {
 		return (
-			<option key={props.randomNumGenerator(1,1000)}>
+			<option key={props.randomNumGenerator(1, 1000)}>
 				{props.products[i].product_name}
 			</option>
 		);
@@ -58,7 +58,7 @@ const LineItem = (props) => {
 		}
 	};
 
-	const updateTotals = (event, lineTotal, vat) => {
+	const updateTotals = (event, priceExcludingVat, lineTotal, vat) => {
 		console.log("updating totals");
 		props.setTotalVat(roundToTwo(props.totalVat + vat));
 		props.setSubTotal(roundToTwo(props.subTotal + lineTotal));
@@ -69,10 +69,13 @@ const LineItem = (props) => {
 		const productQuantity = parseInt(
 			document.getElementById(`product-quantity${randomID}`).value
 		);
-
-		if (isNaN(productQuantity)) {
+		
+		if (
+			isNaN(productQuantity) ||
+			document.getElementById(`product-name${randomID}`).innerHTML === ""
+		) {
 			document.getElementById(`product-quantity${randomID}`).value = 1;
-			updateLineItemPricing();
+			alert("Please select a product before increasing quantities.");
 		} else {
 			const productInformation = getItemInformation();
 			const priceExcludingVat = parseFloat(
@@ -92,10 +95,9 @@ const LineItem = (props) => {
 				productID: lineItemInfo.product_id,
 				lineTotal: lineTotal,
 				dueDate: document.getElementById("invoice-due-date").value,
-			})
-			props.setInvoicePayload(
-				prevPayload
-			);
+			});
+
+			props.setInvoicePayload(prevPayload);
 
 			updateTotals(event, priceExcludingVat, lineTotal, vat);
 		}
@@ -107,45 +109,45 @@ const LineItem = (props) => {
 			id={`product-drop-down${randomID}`}
 			name="product-select"
 		>
-			<option key={props.randomNumGenerator(1,1000)}>Please Select...</option>
+			<option key={props.randomNumGenerator(1, 1000)}>Please Select...</option>
 			{[...productList]}
 		</select>
 	);
 
 	return (
-			<tr id={`line-item${props.lastLineItemIndex}`}  className="line-item">
-				<td
-					className={`inventory-cell product-option${randomID}  pv3 pr2 ba b--black-20`}
-				>
-					{productOptions}
-				</td>
-				<td
-					id={`product-name${randomID}`}
-					className="inventory-cell w-20 pv3  ba b--black-20"
-				></td>
-				<td
-					id={`description${randomID}`}
-					className="inventory-cell w-40 pv3 ba b--black-20"
-				></td>
-				<td className="pv3 ba b--black-20">
-					<input
-						onChange={updateLineItemPricing}
-						className="inventory-cell w-100"
-						min="1"
-						type="number"
-						id={`product-quantity${randomID}`}
-						defaultValue="0"
-					/>
-				</td>
-				<td
-					id={`tax-amount${randomID}`}
-					className="inventory-cell pv3 pr3 ba b--black-20"
-				></td>
-				<td
-					id={`line-total${randomID}`}
-					className="inventory-cell w-10 pv3 pr3 ba b--black-20"
-				></td>
-			</tr>
+		<tr id={`line-item${randomID}`} className="line-item">
+			<td
+				className={`inventory-cell product-option${randomID}  pv3 pr2 ba b--black-20`}
+			>
+				{productOptions}
+			</td>
+			<td
+				id={`product-name${randomID}`}
+				className="inventory-cell w-20 pv3  ba b--black-20"
+			></td>
+			<td
+				id={`description${randomID}`}
+				className="inventory-cell w-40 pv3 ba b--black-20"
+			></td>
+			<td className="pv3 ba b--black-20">
+				<input
+					onChange={updateLineItemPricing}
+					className="inventory-cell w-100"
+					min="1"
+					type="number"
+					id={`product-quantity${randomID}`}
+					defaultValue="0"
+				/>
+			</td>
+			<td
+				id={`tax-amount${randomID}`}
+				className="inventory-cell pv3 pr3 ba b--black-20"
+			></td>
+			<td
+				id={`line-total${randomID}`}
+				className="inventory-cell w-10 pv3 pr3 ba b--black-20"
+			></td>
+		</tr>
 	);
 };
 

@@ -17,6 +17,8 @@ function App(props) {
 
 	const clientsToPush = [];
 
+	const screenWidth = window.innerWidth;
+
 	const getInvoiceID = async () => {
 		const response = await fetch(
 			`http://localhost/d6_challenge/backend/helpers/invoiceFetcher.php`,
@@ -91,18 +93,15 @@ function App(props) {
 		let filteredItems = [];
 
 		let arr = [];
-		
-		currentLineItems.forEach((element, i) => {
 
+		currentLineItems.forEach((element, i) => {
 			if (currentLineItems[i].id.includes("line-total")) {
 				arr.push(parseFloat(currentLineItems[i].innerHTML.replace("R", "")));
 				filteredItems.push(arr.map((item) => item));
 				arr = [];
-			}
-			 else if (currentLineItems[i].id.includes("product-quantity")) {
+			} else if (currentLineItems[i].id.includes("product-quantity")) {
 				arr.push(parseInt(currentLineItems[i].value));
-			} 
-			else if (currentLineItems[i].id.includes("product-name")) {
+			} else if (currentLineItems[i].id.includes("product-name")) {
 				products.forEach((product) => {
 					if (product.product_name === currentLineItems[i].innerHTML) {
 						arr.push(parseInt(product.product_id));
@@ -144,7 +143,6 @@ function App(props) {
 				method: "POST",
 				body: JSON.stringify(payload),
 				headers: {
-					// "Content-Type": "application/json; charset=UTF-8",
 					"Content-Type": "application/json",
 					Accept: "application/json",
 				},
@@ -169,7 +167,9 @@ function App(props) {
 
 	return (
 		<React.Fragment>
-			{showInvoice ? (
+			{screenWidth < 1024 ? (
+				"This app is optimized for desktop, please use a device with a larger screen"
+			) : showInvoice ? (
 				<Invoice
 					clientInfo={clientInfo}
 					products={products}
