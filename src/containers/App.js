@@ -17,6 +17,8 @@ function App(props) {
 
 	const clientsToPush = [];
 
+	const screenWidth = window.innerWidth;
+
 	const getInvoiceID = async () => {
 		const response = await fetch(
 			`http://localhost/d6_challenge/backend/helpers/invoiceFetcher.php`,
@@ -26,7 +28,7 @@ function App(props) {
 			}
 		);
 		const json = await response.json();
-		console.log(json);
+		// console.log(json);
 		setInvoiceId(parseInt(json[0].invoice_id) + 1);
 	};
 
@@ -57,7 +59,6 @@ function App(props) {
 	const getAllClientInfo = async (event) => {
 		const select = document.getElementById("client-drop-down");
 		const payload = { name: select.options[select.selectedIndex].value };
-		console.log(payload);
 		const response = await fetch(
 			`http://localhost/d6_challenge/backend/helpers/clientFetcher.php`,
 			{
@@ -83,87 +84,34 @@ function App(props) {
 			}
 		);
 		const products = await response.json();
-		// const products = json[0];
-		//		console.log(products);
 		setProducts(products);
-		// addLineItem()
 	};
 
 	const generateInvoice = async () => {
 		const currentLineItems = document.querySelectorAll(".inventory-cell");
-		// let tempArr = [];
+
 		let filteredItems = [];
-		// let counter = 0;
-		// let index = 0;
 
-		// console.log(currentLineItems);
 		let arr = [];
-		
-		currentLineItems.forEach((element, i) => {
-			
 
+		currentLineItems.forEach((element, i) => {
 			if (currentLineItems[i].id.includes("line-total")) {
 				arr.push(parseFloat(currentLineItems[i].innerHTML.replace("R", "")));
-				// console.log(i, currentLineItems[i].innerHTML);
 				filteredItems.push(arr.map((item) => item));
 				arr = [];
-			}
-			 else if (currentLineItems[i].id.includes("product-quantity")) {
+			} else if (currentLineItems[i].id.includes("product-quantity")) {
 				arr.push(parseInt(currentLineItems[i].value));
-				// console.log(i, currentLineItems[i].value);
-			} 
-			else if (currentLineItems[i].id.includes("product-name")) {
+			} else if (currentLineItems[i].id.includes("product-name")) {
 				products.forEach((product) => {
 					if (product.product_name === currentLineItems[i].innerHTML) {
-						// console.log("hello", parseInt(product.product_id))
 						arr.push(parseInt(product.product_id));
 					}
-					// console.log(i, currentLineItems[i].innerHTML);
 				});
 			}
 		});
 
-		// while (counter < currentLineItems.length) {
-		// 	if (index === 5) {
-		// 		// console.log("last index", currentLineItems[index].innerHTML);
-		// 		tempArr.push(
-		// 			parseFloat(currentLineItems[index].innerHTML.replace("R", ""))
-		// 		);
-		// 		filteredItems.push(tempArr.map((item) => item));
-		// 		tempArr = [];
-		// 		console.log(tempArr);
+		// console.log("array", filteredItems);
 
-		// 		index = 0;
-		// 	} else if (index === 3) {
-		// 		// console.log("number index", currentLineItems[index].value);
-		// 		tempArr.push(parseInt(currentLineItems[index].value));
-		// 		index++;
-		// 	} else if (index === 1) {
-		// 		// console.log("normal index", currentLineItems[index].innerHTML);
-		// 		// tempArr.push(currentLineItems[index].innerHTML);
-		// 		products.forEach((product) => {
-		// 			if (product.product_name === currentLineItems[index].innerHTML) {
-		// 				tempArr.push(parseInt(product.product_id));
-		// 			}
-		// 		});
-		// 		index++;
-		// 	} else {
-		// 		index++;
-		// 	}
-		// 	counter++;
-		// }
-
-		// console.log(products);
-		console.log("array", filteredItems);
-
-		// const payload = {
-		// 	invoiceId: invoiceId,
-		// 	clientID: clientID,
-		// 	productID: productID,
-		//  productQuantity: productQuantity,
-		// 	lineTotal: lineTotal,
-		// 	dueDate: dueDate,
-		// };
 		const date = new Date();
 		const payload = [];
 
@@ -177,7 +125,6 @@ function App(props) {
 		) {
 			alert("You cant back date the due date for an invoice");
 		} else {
-			// console.log(filteredItems);
 			filteredItems.forEach((item) => {
 				payload.push({
 					invoiceId,
@@ -188,18 +135,7 @@ function App(props) {
 					dueDate: document.getElementById("invoice-due-date").value,
 				});
 			});
-
-			// console.log(payload);
 		}
-
-		// const payload = {
-		// 	invoiceId: invoiceId,
-		// 	clientID: clientInfo.client_id,
-		// 	dueDate: document.getElementById("invoice-due-date").value,
-		// };
-
-		// console.log(JSON.stringify(payload[0]).toString());
-		// console.log({ ...payload });
 
 		const response = await fetch(
 			`http://localhost/d6_challenge/backend/helpers/invoiceGenerator.php`,
@@ -207,7 +143,6 @@ function App(props) {
 				method: "POST",
 				body: JSON.stringify(payload),
 				headers: {
-					// "Content-Type": "application/json; charset=UTF-8",
 					"Content-Type": "application/json",
 					Accept: "application/json",
 				},
@@ -232,7 +167,9 @@ function App(props) {
 
 	return (
 		<React.Fragment>
-			{showInvoice ? (
+			{screenWidth < 1024 ? (
+				"This app is optimized for desktop, please use a device with a larger screen"
+			) : showInvoice ? (
 				<Invoice
 					clientInfo={clientInfo}
 					products={products}

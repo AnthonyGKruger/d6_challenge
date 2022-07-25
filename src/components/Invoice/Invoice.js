@@ -4,6 +4,37 @@ import Button from "./Button";
 import LineItem from "./LineItem";
 
 const Invoice = (props) => {
+	const screenWidth = window.innerWidth;
+
+	const roundToTwo = (num) => {
+		return +(Math.round(num + "e+2") + "e-2");
+	};
+	const removeLineItem = (event) => {
+		const table = document.getElementById("table");
+		const id = table.rows[table.rows.length - 1].id.replace("line-item", "");
+
+		if (
+			document.getElementById(`tax-amount${id}`).innerHTML !== "" ||
+			document.getElementById(`line-item${id}`).innerHTML !== "" ||
+			document.getElementById(`line-total${id}`).innerHTML !== ""
+		) {
+
+			const vat = parseFloat(document.getElementById(`tax-amount${id}`).innerHTML.replace("R", ''));
+			const subTotal = parseFloat(document.getElementById(`line-total${id}`).innerHTML.replace("R", ''));
+			const total = vat + subTotal;
+			console.log(vat, subTotal)
+			props.setTotal(roundToTwo(props.total - total));
+			props.setSubTotal(roundToTwo(props.subTotal - subTotal));
+			props.setTotalVat(roundToTwo(props.totalVat - vat));
+		}
+
+		// console.log(id);
+
+		const toRemove = [...lineItems];
+		toRemove.pop();
+		setLineItems(toRemove);
+	};
+
 	const [lineItems, setLineItems] = useState([
 		<LineItem
 			products={props.products}
@@ -48,24 +79,24 @@ const Invoice = (props) => {
 						The Fruit and Veg
 						<br /> Distributor (Pty) ltd
 					</h1>
-					<div className="pa1 ba mr7 br--top br3">
+					<div className="pa1 ba mr5 br--top br3">
 						<span>123 DownTheRoad street</span>
 					</div>
-					<div className="pa1 ba mr7">
+					<div className="pa1 ba mr5">
 						<span>Pretoria, Gauteng, 0157</span>
 					</div>
-					<div className="pa1 ba mr7">
+					<div className="pa1 ba mr5">
 						<span>Telephone: 061 034 0820</span>
 					</div>
-					<div className="pa1 ba mr7">
+					<div className="pa1 ba mr5">
 						<span>Fax: 061 034 0821</span>
 					</div>
-					<div className="pa1 ba mr7 br--bottom br3">
+					<div className="pa1 ba mr5 br--bottom br3">
 						<span>www.website.com</span>
 					</div>
 				</div>
 
-				<div className="invoice-details-container dib pl7 w-40">
+				<div className="invoice-details-container dib pl5 w-40">
 					<div className="invoice-details">
 						<h1>Invoice</h1>
 						<div className="pa1 ba br--top br3">
@@ -97,14 +128,13 @@ const Invoice = (props) => {
 										date.getMonth() + 1
 									}-${date.getDate()}`}
 								/>
-								{/*remember to link to form*/}
 							</span>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div className="client-details-container center w-100 mt4">
-				<div className="client-details ml6 w-30">
+				<div className="client-details ml6 w-40">
 					<div className="pa1 ba bg-blue br--top br3">
 						<span>BILL TO</span>
 					</div>
@@ -129,25 +159,25 @@ const Invoice = (props) => {
 				<div id="items" className="items center w-80">
 					<div className="pa2">
 						<div className="overflow-auto">
-							<table className="f6 w-100  center" cellSpacing="0">
+							<table id="table" className="f6 w-100  center" cellSpacing="0">
 								<thead>
 									<tr>
-										<th className="w-10 fw6 ba b--black-20 tl pb2 pr3 bg-blue">
+										<th className="fw6 ba b--black-20 tl pb2 pr3 bg-blue">
 											Item
 										</th>
-										<th className="w-20 fw6 ba b--black-20 tl pb2 pr3 bg-blue">
-											name
+										<th className="fw6 ba b--black-20 tl pb2 pr3 bg-blue">
+											Name
 										</th>
-										<th className="w-40 fw6 ba b--black-20 tl pb2 pr3 bg-blue">
+										<th className="fw6 ba b--black-20 tl pb2 pr3 bg-blue">
 											Description
 										</th>
-										<th className="w-10 fw6 ba b--black-20 tl pb2 pr3 bg-blue">
+										<th className="fw6 ba b--black-20 tl pb2 pr3 bg-blue">
 											Quantity
 										</th>
-										<th className="w-10 fw6 ba b--black-20 tl pb2 pr3 bg-blue">
+										<th className="fw6 ba b--black-20 tl pb2 pr3 bg-blue">
 											Tax
 										</th>
-										<th className="w-10 fw6 ba b--black-20 tl pb2 pr3 bg-blue">
+										<th className="fw6 ba b--black-20 tl pb2 pr3 bg-blue">
 											Line Total
 										</th>
 									</tr>
@@ -165,14 +195,20 @@ const Invoice = (props) => {
 						type="submit"
 						text="Add Item"
 						styles=" w-15 pa3 mr3 ba bw1 br2 b--black grow"
-						// randomNumGenerator={props.randomNumGenerator}
 						onClick={addLineItem}
+					/>
+					<Button
+						name="deleteBtn"
+						type="submit"
+						text="Delete Last Item"
+						styles="w-15 pa3  ba bw1 br2 b--black grow"
+						onClick={removeLineItem}
 					/>
 					<Button
 						name="generateBtn"
 						type="submit"
 						text="Generate Invoice"
-						styles="w-15 pa3  ba bw1 br2 b--black grow"
+						styles="w-15 pa3 ml3 ba bw1 br2 b--black grow"
 						onClick={props.generateInvoice}
 					/>
 				</div>
@@ -238,8 +274,7 @@ const Invoice = (props) => {
 						</a>
 					</span>
 				</div>
-			</div>{" "}
-			{}
+			</div>
 		</div>
 	);
 };
