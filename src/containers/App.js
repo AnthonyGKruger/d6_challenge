@@ -110,8 +110,6 @@ function App(props) {
 			}
 		});
 
-		// console.log("array", filteredItems);
-
 		const date = new Date();
 		const payload = [];
 
@@ -135,22 +133,23 @@ function App(props) {
 					dueDate: document.getElementById("invoice-due-date").value,
 				});
 			});
-		}
 
-		const response = await fetch(
-			`http://localhost/d6_challenge/backend/helpers/invoiceGenerator.php`,
-			{
-				method: "POST",
-				body: JSON.stringify(payload),
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/json",
-				},
-			}
-		);
-		const json = await response.text();
-		console.log(json);
-		// possibly reset screen here
+			const response = await fetch(
+				`http://localhost/d6_challenge/backend/helpers/invoiceGenerator.php`,
+				{
+					method: "POST",
+					body: JSON.stringify(payload),
+					headers: {
+						"Content-Type": "application/json",
+						Accept: "application/json",
+					},
+				}
+			);
+			const json = await response.text();
+
+			setShowInvoice(false);
+			alert("Invoice submitted, please select your next customer.");
+		}
 	};
 
 	useEffect(() => {
@@ -185,8 +184,7 @@ function App(props) {
 					setInvoicePayload={setInvoicePayload}
 					getAllClientInfo={getAllClientInfo}
 					generateInvoice={generateInvoice}
-					// addLineItem={addLineItem}
-					// lineItems={lineItems}
+					setShowInvoice={setShowInvoice}
 				/>
 			) : clientList.length > 0 ? (
 				<Landing clients={clientList} formHandler={submitHandler} />
